@@ -1,16 +1,22 @@
-# VLC_Playlist_Scheduler
+# VLC_Playlist_Scheduler #
 A small web app to create a servable schedule of airtimes for videos in a VLC playlist
 
-#### VLC docs ####
+**Local Setup Steps:**
+* install flask with `pip3 install Flask`
+* set flask env `export FLASK_APP=index.py`
+* run the app `flask run`
+* app should be running on: `http://127.0.0.1:5000/`
+
+#### VLC Docs ####
 * VLC Configuration - https://wiki.videolan.org/Documentation:Modules/http_intf/
 * HTTP requests (SAOP) - https://wiki.videolan.org/VLC_HTTP_requests/
 * how to enable http interface - https://hobbyistsoftware.com/vlcsetup-win-manual
 
-exaple requesta:
-* http://127.0.0.1:8080/requests/playlist.xml
-* http://127.0.0.1:8080/requests/status.xml
+**Example Requests:**
+* http://127.0.0.1:8080/requests/playlist.json
+* http://127.0.0.1:8080/requests/status.json
 
-#### Work flow ####
+#### Work Flow ####
 * Scrape playlist - https://docs.google.com/document/d/1Eabyw_ym479h_pZC_sPMmstX5NClywcAWlqUdzFSECg/edit
 
 * parse to decent format (parser.py)
@@ -19,8 +25,9 @@ exaple requesta:
 * calculate when each item will play based on what is currently playing (EST or whatever)
 * write to UI
 
-#### todo ####
+#### Todo ####
 * build flask app
 * build parser
 * build scheduler
 * set up cron job to look at the diff of source and in memory playlists
+* dockerize
