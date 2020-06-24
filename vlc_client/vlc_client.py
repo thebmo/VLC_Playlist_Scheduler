@@ -52,7 +52,6 @@ def get_playlist(playlist_url):
 
 def get_response_json(url):
     # TODO 6.24.2020: get this pw out of here
-    # TODO 6.24.2020: refactor to use `with requests.get` syntax
     auth = requests.auth.HTTPBasicAuth('', 'pass')
     json = {}
     try:
