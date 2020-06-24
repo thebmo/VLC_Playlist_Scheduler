@@ -6,6 +6,7 @@ A small web app to create a servable schedule of airtimes for videos in a VLC pl
 * set flask env `export FLASK_APP=index.py`
 * run the app `flask run`
 * app should be running on: `http://127.0.0.1:5000/`
+* make sure VLC is running with an http interface and password set (user optional)
 
 #### VLC Docs ####
 * VLC Configuration - https://wiki.videolan.org/Documentation:Modules/http_intf/
@@ -17,8 +18,7 @@ A small web app to create a servable schedule of airtimes for videos in a VLC pl
 * http://127.0.0.1:8080/requests/status.json
 
 #### Work Flow ####
-* Scrape playlist - https://docs.google.com/document/d/1Eabyw_ym479h_pZC_sPMmstX5NClywcAWlqUdzFSECg/edit
-
+* Scrape playlist
 * parse to decent format (parser.py)
 * fetch what is playing (with current duration in seconds)
 * figure out where in the playlist it is
