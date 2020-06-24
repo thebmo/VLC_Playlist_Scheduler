@@ -4,7 +4,7 @@ A small web app to create a servable schedule of airtimes for videos in a VLC pl
 * install flask with `pip3 install Flask`
 * set flask env `export FLASK_APP=index.py`
 * run the app `flask run`
-
+* app should be running on: `http://127.0.0.1:5000/`
 
 #### VLC docs ####
 * VLC Configuration - https://wiki.videolan.org/Documentation:Modules/http_intf/
