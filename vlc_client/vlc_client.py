@@ -61,7 +61,6 @@ def get_response_json(url):
     try:
         with requests.Session() as s:
             response = s.get(url, auth=auth)
-            print(response.status_code)
             json = response.json()
     except:
         raise Exception("failed request: {}".format(url))

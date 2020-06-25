@@ -31,3 +31,4 @@ A small web app to create a servable schedule of airtimes for videos in a VLC pl
 * build scheduler
 * set up cron job to look at the diff of source and in memory playlists
 * dockerize
+* support webhooks (like discord!)

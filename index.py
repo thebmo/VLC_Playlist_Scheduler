@@ -2,6 +2,7 @@ import datetime
 from flask import Flask, jsonify
 import vlc_client.vlc_client as VLC
 
+
 app = Flask(__name__)
 # TODO 6.24.2020: I Think this is where we set env vars.
 # write a config loader class to handle this safely.
@@ -19,7 +20,6 @@ def index():
         if item['title'] == current['title']:
             curr_index = i
             break
-    print("current index: {}".format(curr_index))
     playlist = original_playlist[curr_index:] + original_playlist[:curr_index]
 
     # calculate deltas and insert into playlist
