@@ -8,6 +8,8 @@ from urllib.parse import urljoin
 # should remove url params from client arguements.
 # maybe make a master config yml file or something
 
+# TODO 6.25.2020: Handle duration -1 in playlist and status
+
 # Config
 base_url = 'http://127.0.0.1'
 port = '8080'
@@ -21,14 +23,16 @@ status = urljoin(url, status_endpoint)
 # {
 #   "title": <string>,
 #   "duration": <int>,
-#   "current": <int>"]
+#   "elapsed": <int>"]
 # }
 def get_status(status_url):
     json = get_response_json(status_url)
+    meta = json["information"]["category"]["meta"]
+    title = meta["title"] if "title" in meta else meta["filename"]
     return {
-      "title": json["information"]["category"]["meta"]["filename"],
+      "title": title,
       "duration": json["length"],
-      "current": json["time"]
+      "elapsed": json["time"]
     }
 
 
