@@ -1,16 +1,20 @@
 import datetime
-from flask import Flask, jsonify
+from flask import Flask, jsonify, render_template
+from helpers import elapsed_percent, human_readable_time
 import vlc_client.vlc_client as VLC
 
 
 app = Flask(__name__)
 # TODO 6.24.2020: I Think this is where we set env vars.
 # write a config loader class to handle this safely.
+app.config['DEBUG'] = True
+
 
 
 @app.route('/')
 def index():
     # TODO 6.25.2020: scrape out the schedule builder into a helper method
+    # TODO 6.26.2020: Throw a 404 if vlc is not running instead of breaking app
     original_playlist = VLC.get_playlist('http://127.0.0.1:8080/requests/playlist.json')
     current = VLC.get_status('http://127.0.0.1:8080/requests/status.json')
 
@@ -22,21 +26,34 @@ def index():
             break
     playlist = original_playlist[curr_index:] + original_playlist[:curr_index]
 
-    # calculate deltas and insert into playlist
+    # update the currently playing video witha dditional properties
+    current['readable_elapsed'] = human_readable_time(current['elapsed'])
+    current['readable_duration'] = human_readable_time(current['duration'])
+    current['progress_percent'] = elapsed_percent(
+                                    current['elapsed'],
+                                    current['duration'])
+
+    # calculate deltas for air_date and insert into playlist
     running_time = datetime.datetime.now()
     for i, item in enumerate(playlist):
         # do nothing on first pass through
         if i == 1:
-            # first item we want to diff on the current position
-            # of what is currently playing
+            # The second item in the playlist's air_date is calculated
+            # by subtracting the elapsed time of the current track from its
+            # duration
             running_time += datetime.timedelta(
                 seconds=current['duration'] - current['elapsed'])
         elif i > 1:
             running_time += datetime.timedelta(seconds=item['duration'])
 
-        item['air_date'] = str(running_time)
+        # Add additional properties into playlist item
+        item['air_date'] = str(running_time).split('.')[0]
+        item['readable_duration'] = human_readable_time(item['duration'])
 
-    return jsonify(playlist)
+    # return jsonify(playlist)
+    return render_template('index.html',
+                            current=current,
+                            playlist=playlist)
 
 
 # Returns the currently playing video with basic
