@@ -3,65 +3,72 @@ import http.client
 from urllib.parse import urljoin
 
 
-# TODO 6.24.2020: remove teh conf stuff from where
-# and implement proper config management
-# should remove url params from client arguements.
+# TODO 6.24.2020: implement proper config management
 # maybe make a master config yml file or something
 
 # TODO 6.25.2020: Handle duration -1 in playlist and status
 
-# Config
-base_url = 'http://127.0.0.1'
-port = '8080'
-url = "{}:{}".format(base_url, port)
-status_endpoint = '/requests/status.json'
-playlist_endpoint = '/requests/playlist.json'
-status = urljoin(url, status_endpoint)
+# usage
+# client = VLCClient(host, port)
+# client = VLCClient('http://127.0.0.1', 8080)
+# client.get_status()
+class VLCClient(object):
+    def __init__(self, host, port):
+        self.host = host
+        self.port = port
+        self.status_url = '/requests/status.json'
+        self.playlist_url = '/requests/playlist.json'
 
 
-# returns a status of currently playing frmo your status endpoint
-# {
-#   "title": <string>,
-#   "duration": <int>,
-#   "elapsed": <int>"]
-# }
-def get_status(status_url):
-    json = get_response_json(status_url)
-    meta = json["information"]["category"]["meta"]
-    title = meta["title"] if "title" in meta else meta["filename"]
-    return {
-      "title": title,
-      "duration": json["length"],
-      "elapsed": json["time"]
-    }
+    def get_url(self, endpoint):
+        url = "{}:{}".format(self.host, self.port)
+        return urljoin(url, endpoint)
 
 
-# returns a playlist of videos
-# [{'duration': 8015, 'title': 'UCB_SEASON 1 disc 1.avi', 'id': '3'},
-#  {'duration': 5345, 'title': 'UCB_SEASON 1 disc 2.avi', 'id': '4'}]
-def get_playlist(playlist_url):
-    playlist = []
-    json = get_response_json(playlist_url)
-    for child in json["children"]:
-        if child["name"] == "Playlist":
-            for subchild in child["children"]:
-                playlist.append({
-                    "title": subchild["name"],
-                    "duration": subchild["duration"],
-                    "id": subchild['id']
-                })
-            break
-    return playlist
+    # returns a status of currently playing frmo your status endpoint
+    # {
+    #   "title": <string>,
+    #   "duration": <int>,
+    #   "elapsed": <int>"]
+    # }
+    def get_status(self):
+        json = self.get_response_json(self.status_url)
+        meta = json["information"]["category"]["meta"]
+        title = meta["title"] if "title" in meta else meta["filename"]
+        return {
+          "title": title,
+          "duration": json["length"],
+          "elapsed": json["time"]
+        }
 
 
-def get_response_json(url):
-    # TODO 6.24.2020: get this pw out of here
-    auth = requests.auth.HTTPBasicAuth('', 'pass')
-    json = {}
-    try:
-        with requests.Session() as s:
-            response = s.get(url, auth=auth)
-            json = response.json()
-    except:
-        raise Exception("failed request: {}".format(url))
-    return json
+    # returns a playlist of videos
+    # [{'duration': 8015, 'title': 'UCB_SEASON 1 disc 1.avi', 'id': '3'},
+    #  {'duration': 5345, 'title': 'UCB_SEASON 1 disc 2.avi', 'id': '4'}]
+    def get_playlist(self):
+        playlist = []
+        json = self.get_response_json(self.playlist_url)
+        for child in json["children"]:
+            if child["name"] == "Playlist":
+                for subchild in child["children"]:
+                    playlist.append({
+                        "title": subchild["name"],
+                        "duration": subchild["duration"],
+                        "id": subchild['id']
+                    })
+                break
+        return playlist
+
+
+    def get_response_json(self, endpoint):
+        # TODO 6.24.2020: get this pw out of here
+        auth = requests.auth.HTTPBasicAuth('', 'pass')
+        json = {}
+        url = self.get_url(endpoint)
+        try:
+            with requests.Session() as s:
+                response = s.get(url, auth=auth)
+                json = response.json()
+        except:
+            raise Exception("failed request: {}".format(url))
+        return json
