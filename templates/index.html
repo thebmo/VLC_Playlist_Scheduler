@@ -1,0 +1,41 @@
+{% include "base.html" %}
+{% include "header.html" %}
+
+
+{% block content %}
+    <style>
+       td {
+           padding: 5px 10px 5px 5px;
+       }
+
+    </style>
+
+    <center>
+      <div class="container">
+          <div class="mx-auto">
+            <p><b>Currently playing:</b> {{current.title}}</p>
+          </div>
+          <div class="mx-auto">
+            <div class="progress w-50">
+              <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="{{current.progress_percent}}" aria-valuemin="0" aria-valuemax="100" style="width:{{current.progress_percent}}%">
+                  <b>{{current.progress_percent}}%</b>
+              </div>
+            </div>
+          </div>
+          <div class="mx-auto">
+            <p>{{current.readable_elapsed}} / {{current.readable_duration}}</p>
+          </div
+      </div>
+    </center>
+
+    <div>
+      <center>
+        <table>
+          <tr><th>Air Date</th><th>Title</th><th>Duration</th></tr>
+          {% for video in playlist %}
+            <tr><td>{{video.air_date}}</td><td>{{video.title}}</td><td>{{video.readable_duration}}</td></tr>
+          {% endfor %}
+        </table>
+      </center>
+    </div>
+{% endblock %}
