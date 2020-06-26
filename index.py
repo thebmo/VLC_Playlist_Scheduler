@@ -1,6 +1,6 @@
 import datetime
-from helpers import elapsed_percent, human_readable_time
 from flask import Flask, jsonify, render_template
+from helpers import elapsed_percent, human_readable_time
 import vlc_client.vlc_client as VLC
 
 
@@ -26,7 +26,7 @@ def index():
             break
     playlist = original_playlist[curr_index:] + original_playlist[:curr_index]
 
-    # update the currently playinv video witha dditional properties
+    # update the currently playing video witha dditional properties
     current['readable_elapsed'] = human_readable_time(current['elapsed'])
     current['readable_duration'] = human_readable_time(current['duration'])
     current['progress_percent'] = elapsed_percent(
