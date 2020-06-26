@@ -35,4 +35,4 @@ A small web app to create a servable schedule of airtimes for videos in a VLC pl
 
 
 #### Screen Shot ####
-![screenshot](screen_shot.png)
+![screenshot](https://github.com/thebmo/VLC_Playlist_Scheduler/blob/master/sreen_shot.png)
