@@ -9,13 +9,13 @@ from urllib.parse import urljoin
 # TODO 6.25.2020: Handle duration -1 in playlist and status
 
 # usage
-# client = VLCClient(host, port)
-# client = VLCClient('http://127.0.0.1', 8080)
-# client.get_status()
+# client = VLCClient([Dictionarion]config)
 class VLCClient(object):
-    def __init__(self, host, port):
-        self.host = host
-        self.port = port
+    def __init__(self, config):
+        self.host = config['host']
+        self.port = config['port']
+        self.user = config['user'] if config['user'] != None else ''
+        self.password = config['pass'] if config['pass'] != None else ''
         self.status_url = '/requests/status.json'
         self.playlist_url = '/requests/playlist.json'
 
@@ -62,7 +62,7 @@ class VLCClient(object):
 
     def get_response_json(self, endpoint):
         # TODO 6.24.2020: get this pw out of here
-        auth = requests.auth.HTTPBasicAuth('', 'pass')
+        auth = requests.auth.HTTPBasicAuth(self.user, self.password)
         json = {}
         url = self.get_url(endpoint)
         try:

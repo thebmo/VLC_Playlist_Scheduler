@@ -1,14 +1,17 @@
 import datetime
 from flask import Flask, jsonify, render_template
-from helpers import elapsed_percent, human_readable_time
+from helpers import elapsed_percent, ensure_logs_dir, human_readable_time, load_yaml, setup_logging
 from vlc_client.vlc_client import VLCClient
 
-
 app = Flask(__name__)
-# TODO 6.24.2020: I Think this is where we set env vars.
-# write a config loader class to handle this safely.
+config = load_yaml('config.yaml')
+ensure_logs_dir(config['LOGGING']['path'])
+
+file = setup_logging(config['LOGGING']['path'])
+app.logger.addHandler(file)
 app.config['DEBUG'] = True
-vlc = VLCClient('http://127.0.0.1', 8080)
+
+vlc = VLCClient(config['VLC'])
 
 
 @app.route('/')

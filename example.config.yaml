@@ -1,0 +1,12 @@
+# Copy/Rename this file to 'config.yaml' and place in project root directory.
+
+# VlC client settings for your http interface (set up in VLC directly)
+VLC:
+    user: test_user
+    pass: password
+    host: http://127.0.0.1
+    port: 8080
+
+# What directory logging should dump files out to.
+LOGGING:
+    path: logs
