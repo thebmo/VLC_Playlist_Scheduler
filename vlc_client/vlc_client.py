@@ -3,9 +3,6 @@ import http.client
 from urllib.parse import urljoin
 
 
-# TODO 6.24.2020: implement proper config management
-# maybe make a master config yml file or something
-
 # TODO 6.25.2020: Handle duration -1 in playlist and status
 
 # usage
@@ -61,7 +58,6 @@ class VLCClient(object):
 
 
     def get_response_json(self, endpoint):
-        # TODO 6.24.2020: get this pw out of here
         auth = requests.auth.HTTPBasicAuth(self.user, self.password)
         json = {}
         url = self.get_url(endpoint)
