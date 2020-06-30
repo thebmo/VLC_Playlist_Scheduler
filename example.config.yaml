@@ -10,3 +10,9 @@ VLC:
 # What directory logging should dump files out to.
 LOGGING:
     path: logs
+
+UI:
+    slogan: Change your slogin in config.yaml
+    logo: logo.png
+    twitter: twitter_user
+    twitch: twitch_user

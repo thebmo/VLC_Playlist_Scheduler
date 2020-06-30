@@ -1,5 +1,5 @@
-{% include "base.html" %}
-{% include "header.html" %}
+
+{% extends "header.html" %}
 
 
 {% block content %}
@@ -11,7 +11,7 @@
     </style>
 
     <center>
-      <div class="container">
+      <div class="container pt-5">
           <div class="mx-auto">
             <p><b>Currently playing:</b> {{current.title}}</p>
           </div>

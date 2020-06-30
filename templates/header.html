@@ -4,11 +4,10 @@
 <div class="container">
     <div class="row">
         <div class="col text-center text-white mt-3">
-           <a href="https://www.youtube.com/watch?v=_AUXpnB065o" target="_blank">
-               <img src="{{url_for('static', filename='logo.png')}}" style="border: 0;">
-           </a>
-
-            <p>Change Your Logo, Slogan, and Menu in header.html</p>
+            <img src="{{url_for('static', filename=ui.logo)}}"  style="border: 0;">
+          {% if ui.slogan %}
+            <p>{{ui.slogan}}</p>
+          {% endif %}
         </div>
     </div>
 </div>
@@ -17,10 +16,35 @@
 <div>
     <center><table>
         <tr>
-            <td class="pr-3"><h5><a href="">menu link</a></h5></td>
-            <td class="pr-3"><h5><a href="">menu link</a></h5></td>
-            <td class="pr-3"><h5><a href="">menu link</a></h5></td>
-            <td class="pr-3"><h5><a href="#">menu link</a></h5></td>
+          {% if ui.twitch %}
+          <td>
+            <table style="border-radius: 25px;background-color:#7b5ab7;">
+              <tr>
+                <td class="pr-0">
+                  <img src="{{url_for('static', filename='twitch-icon.png')}}" style="border: 0;width: 50;">
+                </td>
+                <td>
+                  <h5><a href="https://www.twitch.tv/{{ui.twitch}}" target= "_blank" style="color: white;">{{ui.twitch}}</a></h5>
+                </td>
+              </tr>
+            </table
+          </td>
+          {% endif %}
+          {% if ui.twitter %}
+          <td>
+            <table style="border-radius: 25px;background-color:#1da1f2;">
+              <tr>
+                <td class="pr-0">
+                  <img src="{{url_for('static', filename='twitter-icon.png')}}" style="border: 0;width: 50;">
+                </td>
+                <td>
+                  <h5><a href="https://www.twitter.com/{{ui.twitch}}" target= "_blank" style="color: white;">{{ui.twitter}}</a></h5>
+                </td>
+              </tr>
+            </table
+          </td>
+          {% endif %}
          </tr>
     </table></center>
 </div>
+{% block content %}{% endblock %}
