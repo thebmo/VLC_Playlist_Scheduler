@@ -13,7 +13,6 @@ app.config['DEBUG'] = True
 
 vlc = VLCClient(config['VLC'])
 
-
 @app.route('/')
 def index():
     # TODO 6.25.2020: scrape out the schedule builder into a helper method
@@ -56,7 +55,8 @@ def index():
     # return jsonify(playlist)
     return render_template('index.html',
                             current=current,
-                            playlist=playlist)
+                            playlist=playlist,
+                            ui=config['UI'])
 
 
 # Returns the currently playing video with basic
