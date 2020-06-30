@@ -1,8 +1,9 @@
 # VLC_Playlist_Scheduler #
 A small web app to create a servable schedule of airtimes for videos in a VLC playlist
 
-**Local Setup Steps:**
-* install flask with `pip3 install Flask`
+**Local Setup Steps and Dependencies:**
+* **DEPENDENCY** install flask with `pip3 install Flask`
+* **DEPENDENCY** install pyyaml with `pip3 install pyyaml`
 * set flask env `export FLASK_APP=index.py`
 * run the app `flask run`
 * app should be running on: `http://127.0.0.1:5000/`

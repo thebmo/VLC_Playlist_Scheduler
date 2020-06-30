@@ -1,0 +1,6 @@
+# Copy/Rename this file to 'config.yaml'
+VLC:
+    user: test_user
+    pass: password
+    host: http://127.0.0.1
+    port: 8080
