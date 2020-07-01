@@ -3,6 +3,45 @@ import logging
 import os
 import yaml
 
+
+def build_schedule(current, original_playlist, expiration):
+    # re-order playlist with current item on top
+    curr_index = 0
+    for i, item in enumerate(original_playlist):
+        if item['title'] == current['title']:
+            curr_index = i
+            break
+    playlist = original_playlist[curr_index:] + original_playlist[:curr_index]
+
+    # update the currently playing video witha dditional properties
+    current['readable_elapsed'] = human_readable_time(current['elapsed'])
+    current['readable_duration'] = human_readable_time(current['duration'])
+    current['progress_percent'] = elapsed_percent(
+                                    current['elapsed'],
+                                    current['duration'])
+
+    # calculate deltas for air_date and insert into playlist
+    running_time = datetime.datetime.now()
+    for i, item in enumerate(playlist):
+        # do nothing on first pass through
+        if i == 1:
+            # The second item in the playlist's air_date is calculated
+            # by subtracting the elapsed time of the current track from its
+            # duration
+            running_time += datetime.timedelta(
+                seconds=current['duration'] - current['elapsed'])
+        elif i > 1:
+            running_time += datetime.timedelta(seconds=item['duration'])
+
+        # Add additional properties into playlist item
+        item['air_date'] = str(running_time).split('.')[0]
+        item['readable_duration'] = human_readable_time(item['duration'])
+
+    return { "current": current,
+             "playlist": playlist,
+             "exp": set_expiration(expiration) }
+
+
 def ensure_logs_dir(log_dir):
     try:
         os.makedirs(log_dir, exist_ok=True) # Python>3.2
@@ -26,6 +65,15 @@ def human_readable_time(seconds):
 def load_yaml(file_path):
     with open(file_path) as file:
         return yaml.load(file, Loader=yaml.FullLoader)
+
+
+def schedule_expired(schedule):
+    return  datetime.datetime.now() > schedule['exp']
+
+
+def set_expiration(duration):
+    return datetime.datetime.now() + datetime.timedelta(seconds=duration)
+
 
 def setup_logging(logging_path):
     logFormatStr = '[%(asctime)s] p%(process)s {%(pathname)s:%(lineno)d} %(levelname)s - %(message)s'

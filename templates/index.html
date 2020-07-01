@@ -3,6 +3,7 @@
 
 
 {% block content %}
+    <head><meta http-equiv="refresh" content="{{refresh}}"></head>
     <style>
        td {
            padding: 5px 10px 5px 5px;
@@ -13,17 +14,15 @@
     <center>
       <div class="container pt-5">
           <div class="mx-auto">
-            <p><b>Currently playing:</b> {{current.title}}</p>
+            <p><b>Currently playing:</b> {{current.title}} </p>
           </div>
           <div class="mx-auto">
             <div class="progress w-50">
-              <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="{{current.progress_percent}}" aria-valuemin="0" aria-valuemax="100" style="width:{{current.progress_percent}}%">
-                  <b>{{current.progress_percent}}%</b>
-              </div>
+              <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="{{current.progress_percent}}" aria-valuemin="0" aria-valuemax="100" style="width:{{current.progress_percent}}%"></div>
             </div>
           </div>
           <div class="mx-auto">
-            <p>{{current.readable_elapsed}} / {{current.readable_duration}}</p>
+            <p>{{current.readable_elapsed}} / {{current.readable_duration}} [<b>{{current.progress_percent}}%</b>]</p>
           </div
       </div>
     </center>
