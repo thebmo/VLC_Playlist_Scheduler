@@ -20,7 +20,6 @@ SCHEDULE = {
 
 @app.route('/')
 def index():
-    # TODO 6.25.2020: scrape out the schedule builder into a helper method
     # TODO 6.26.2020: Throw a 404 if vlc is not running instead of breaking app
 
     # rebuild the schedule if the cache has expired
