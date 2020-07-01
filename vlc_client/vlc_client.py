@@ -29,6 +29,7 @@ class VLCClient(object):
     #   "elapsed": <int>"]
     # }
     def get_status(self):
+        # TODO 7.1.2020: wrap this in try catch to handle off line VlC, return {}
         json = self.get_response_json(self.status_url)
         meta = json["information"]["category"]["meta"]
         title = meta["title"] if "title" in meta else meta["filename"]

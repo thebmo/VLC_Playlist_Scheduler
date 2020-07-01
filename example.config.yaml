@@ -8,9 +8,12 @@ VLC:
     port: 8080
 
 # What directory logging should dump files out to.
+# ie: /project/root/<path>
 LOGGING:
     path: logs
 
+# leave twitch and twitter fields empty if you do not
+# want them displayed.
 UI:
     slogan: Change your slogin in config.yaml
     logo: logo.png
