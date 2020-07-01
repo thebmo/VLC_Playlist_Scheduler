@@ -1,29 +1,45 @@
 import datetime
 from flask import Flask, jsonify, redirect, render_template, url_for
-from helpers import build_schedule, elapsed_percent, ensure_logs_dir, human_readable_time, load_yaml, setup_logging
+from helpers import(build_schedule, elapsed_percent, ensure_logs_dir,
+human_readable_time, load_yaml, schedule_expired, setup_logging)
 from vlc_client.vlc_client import VLCClient
 
 app = Flask(__name__)
 config = load_yaml('config.yaml')
-ensure_logs_dir(config['LOGGING']['path'])
 
-file = setup_logging(config['LOGGING']['path'])
-app.logger.addHandler(file)
+ensure_logs_dir(config['LOGGING']['path'])
+log_file = setup_logging(config['LOGGING']['path'])
+app.logger.addHandler(log_file)
 
 vlc = VLCClient(config['VLC'])
-schedule = {}
+SCHEDULE = {
+    "exp": datetime.datetime.now(),
+    "playlist": {},
+    "current": {}
+ }
 
 @app.route('/')
 def index():
     # TODO 6.25.2020: scrape out the schedule builder into a helper method
     # TODO 6.26.2020: Throw a 404 if vlc is not running instead of breaking app
-    schedule = vlc.get_playlist()
-    current = vlc.get_status()
-    playlist = build_schedule(current, schedule)
+
+    # rebuild the schedule if the cache has expired
+    if schedule_expired(SCHEDULE):
+        current = vlc.get_status()
+        playlist = vlc.get_playlist()
+        SCHEDULE.clear()
+        SCHEDULE.update(build_schedule(current,
+                                       playlist,
+                                       config['VLC']['cache_expiration']))
+
+    if app.debug:
+        ("cache expires at: {}".format(SCHEDULE['exp']))
+
     return render_template('index.html',
-                            current=current,
-                            playlist=playlist,
-                            ui=config['UI'])
+                            current=SCHEDULE['current'],
+                            playlist=SCHEDULE['playlist'],
+                            ui=config['UI'],
+                            refresh=config['VLC']['cache_expiration'])
 
 
 # Returns the currently playing video with basic

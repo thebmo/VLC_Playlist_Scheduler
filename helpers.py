@@ -4,7 +4,7 @@ import os
 import yaml
 
 
-def build_schedule(current, original_playlist):
+def build_schedule(current, original_playlist, expiration):
     # re-order playlist with current item on top
     curr_index = 0
     for i, item in enumerate(original_playlist):
@@ -37,7 +37,9 @@ def build_schedule(current, original_playlist):
         item['air_date'] = str(running_time).split('.')[0]
         item['readable_duration'] = human_readable_time(item['duration'])
 
-    return playlist
+    return { "current": current,
+             "playlist": playlist,
+             "exp": set_expiration(expiration) }
 
 
 def ensure_logs_dir(log_dir):
@@ -63,6 +65,15 @@ def human_readable_time(seconds):
 def load_yaml(file_path):
     with open(file_path) as file:
         return yaml.load(file, Loader=yaml.FullLoader)
+
+
+def schedule_expired(schedule):
+    return  datetime.datetime.now() > schedule['exp']
+
+
+def set_expiration(duration):
+    return datetime.datetime.now() + datetime.timedelta(seconds=duration)
+
 
 def setup_logging(logging_path):
     logFormatStr = '[%(asctime)s] p%(process)s {%(pathname)s:%(lineno)d} %(levelname)s - %(message)s'

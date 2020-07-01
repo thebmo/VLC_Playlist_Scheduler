@@ -6,6 +6,7 @@ VLC:
     pass: password
     host: http://127.0.0.1
     port: 8080
+    cache_expiration: 60 # seconds. handles page auto refresh too
 
 # What directory logging should dump files out to.
 # ie: /project/root/<path>
