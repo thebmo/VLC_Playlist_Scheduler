@@ -24,12 +24,15 @@ def index():
 
     # rebuild the schedule if the cache has expired
     if schedule_expired(SCHEDULE):
-        current = vlc.get_status()
-        playlist = vlc.get_playlist()
-        SCHEDULE.clear()
-        SCHEDULE.update(build_schedule(current,
-                                       playlist,
-                                       config['VLC']['cache_expiration']))
+        try:
+            current = vlc.get_status()
+            playlist = vlc.get_playlist()
+            SCHEDULE.clear()
+            SCHEDULE.update(build_schedule(current,
+                                           playlist,
+                                           config['VLC']['cache_expiration']))
+        except Exception as e:
+            print(e)
 
     if app.debug:
         ("cache expires at: {}".format(SCHEDULE['exp']))
