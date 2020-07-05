@@ -4,6 +4,7 @@ A small web app to create a servable schedule of airtimes for videos in a VLC pl
 **Local Setup Steps and Dependencies:**
 * **DEPENDENCY** install flask with `pip3 install Flask`
 * **DEPENDENCY** install pyyaml with `pip3 install pyyaml`
+* **DEPENDENCY** install requests with `pip3 install requests`
 * set flask env `export FLASK_APP=index.py`
 * create/rename and setup `config.yaml` file (see `example.config.yaml`)
 * run the app `flask run`
