@@ -1,10 +1,12 @@
 import datetime
 from flask import Flask, jsonify, redirect, render_template, url_for
+from flask_moment import Moment
 from helpers import(build_schedule, elapsed_percent, ensure_logs_dir,
 human_readable_time, load_yaml, schedule_expired, setup_logging)
 from vlc_client.vlc_client import VLCClient
 
 app = Flask(__name__)
+moment = Moment(app)
 config = load_yaml('config.yaml')
 
 ensure_logs_dir(config['LOGGING']['path'])
