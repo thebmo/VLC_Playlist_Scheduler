@@ -32,7 +32,7 @@
         <table>
           <tr><th>Air Date</th><th>Title</th><th>Duration</th></tr>
           {% for video in playlist %}
-            <tr><td>{{video.air_date}}</td><td>{{video.title}}</td><td>{{video.readable_duration}}</td></tr>
+            <tr><td>{{moment(video.air_date).format('MMM Do YYYY, h:mm:ss a')}}</td><td>{{video.title}}</td><td>{{video.readable_duration}}</td></tr>
           {% endfor %}
         </table>
       </center>

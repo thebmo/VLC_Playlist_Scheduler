@@ -21,7 +21,8 @@ def build_schedule(current, original_playlist, expiration):
                                     current['duration'])
 
     # calculate deltas for air_date and insert into playlist
-    running_time = datetime.datetime.now()
+    # use UTC time and format it on the frontend
+    running_time = datetime.datetime.utcnow()
     for i, item in enumerate(playlist):
         # do nothing on first pass through
         if i == 1:
@@ -34,7 +35,7 @@ def build_schedule(current, original_playlist, expiration):
             running_time += datetime.timedelta(seconds=item['duration'])
 
         # Add additional properties into playlist item
-        item['air_date'] = str(running_time).split('.')[0]
+        item['air_date'] = running_time
         item['readable_duration'] = human_readable_time(item['duration'])
 
     return { "current": current,
