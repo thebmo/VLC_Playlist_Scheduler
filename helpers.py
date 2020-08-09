@@ -14,6 +14,7 @@ def build_schedule(current, original_playlist, expiration):
     playlist = original_playlist[curr_index:] + original_playlist[:curr_index]
 
     # update the currently playing video witha dditional properties
+    # for the template. see "templates/index.py" for useage
     current['readable_elapsed'] = human_readable_time(current['elapsed'])
     current['readable_duration'] = human_readable_time(current['duration'])
     current['progress_percent'] = elapsed_percent(
@@ -21,25 +22,20 @@ def build_schedule(current, original_playlist, expiration):
                                     current['duration'])
 
     # calculate deltas for air_date and insert into playlist
-    # use UTC time and format it on the frontend
-
+    # uses UTC time and format it to client timezone on the frontend
     now = datetime.datetime.utcnow()
     running_time = 0
     for i, item in enumerate(playlist):
         if i == 0:
-            # do nothing on first pass through because airdate is now.
+            # first pass, running time is how much of the current item
+            # has been played
             item['air_date'] = now
-        elif i == 1:
-            # The second item in the playlist's air_date is calculated
-            # by subtracting the elapsed time of the current track from its
-            # duration
-            item['air_date'] = now + datetime.timedelta(
-                seconds=current['duration'] - current['elapsed'])
-        else i > 1:
+            running_time += current['duration'] - current['elapsed']
+        else:
             item['air_date'] = now + datetime.timedelta(seconds=running_time)
+            running_time += item['duration']
 
-        # Add additional properties into playlist item
-        running_time += item['duration']
+        # Add additional properties into playlist item for the template
         item['readable_duration'] = human_readable_time(item['duration'])
 
     return { "current": current,
