@@ -1,12 +1,14 @@
 # Copy/Rename this file to 'config.yaml' and place in project root directory.
 
 # VlC client settings for your http interface (set up in VLC directly)
+# Cache expiration handles page auto refresh rate and how often the
+# schedule is recreated.
 VLC:
     user: test_user
     pass: password
     host: http://127.0.0.1
     port: 8080
-    cache_expiration: 60 # seconds. handles page auto refresh too
+    cache_expiration: 60 # seconds.
 
 # What directory logging should dump files out to.
 # ie: /project/root/<path>
@@ -15,6 +17,10 @@ LOGGING:
 
 # leave twitch and twitter fields empty if you do not
 # want them displayed.
+# ex:
+# UI:
+#     twitter:
+#     twitch:
 UI:
     slogan: Change your slogin in config.yaml
     logo: logo.png

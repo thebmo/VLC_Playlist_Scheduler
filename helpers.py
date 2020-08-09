@@ -22,20 +22,24 @@ def build_schedule(current, original_playlist, expiration):
 
     # calculate deltas for air_date and insert into playlist
     # use UTC time and format it on the frontend
-    running_time = datetime.datetime.utcnow()
+
+    now = datetime.datetime.utcnow()
+    running_time = 0
     for i, item in enumerate(playlist):
-        # do nothing on first pass through
-        if i == 1:
+        if i == 0:
+            # do nothing on first pass through because airdate is now.
+            item['air_date'] = now
+        elif i == 1:
             # The second item in the playlist's air_date is calculated
             # by subtracting the elapsed time of the current track from its
             # duration
-            running_time += datetime.timedelta(
+            item['air_date'] = now + datetime.timedelta(
                 seconds=current['duration'] - current['elapsed'])
-        elif i > 1:
-            running_time += datetime.timedelta(seconds=item['duration'])
+        else i > 1:
+            item['air_date'] = now + datetime.timedelta(seconds=running_time)
 
         # Add additional properties into playlist item
-        item['air_date'] = running_time
+        running_time += item['duration']
         item['readable_duration'] = human_readable_time(item['duration'])
 
     return { "current": current,
